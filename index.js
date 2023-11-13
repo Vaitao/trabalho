@@ -20,31 +20,43 @@ function processar(req, res){
     lista_usuarios.push(user);
 
     console.log(lista_usuarios);
+    res.redirect(`/listar`);
 
 
 }
 
+
 app.get(`/`, (requisicao, resposta) => {
 
     app.use(express.static(path.join(process.cwd(),`src`)))
-    resposta.send(`<a href = "cadastro.html">clique aqui</a>`)
+    resposta.send(`<a href = "cadastro.html">formulario</a><br>
+                    <a href="/listar">listar</a>
+                    
+                    
+                    
+                    
+                    <script>function redireciona()
+                    {
+                        resposta.redirect("/listar");
+
+                    }</script>`
+                    )
 })
 
 app.get(`/listar`, (requisicao, resposta) => {
 
-    conteudo = ``;
+    conteudo = `<a href = "/">menu principal</a><br><br>`;
 
     for (const usuario of lista_usuarios){
         conteudo += `<tr>
                         <td>${usuario.email}</td>
                         <td>${usuario.nome}</td>
                         <td>${usuario.senha}</td>
-                    <tr>
+                    <tr><br>
         `;
     }
 
     resposta.send(`${conteudo}`);
-
 })
 
 app.get(`/processar-cadastro`, processar)
